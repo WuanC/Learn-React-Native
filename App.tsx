@@ -1,39 +1,38 @@
 import { useState } from 'react';
-import { Button, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 
 export default function App() {
 
-  const [count, setCount] = useState<number>(0);
-  const [name, setName] = useState<string>('');
-  const [age, setAge] = useState<number>(0);
+  type Student = {
+    id: string;
+    name: string;
+    age: number;
+  };
+  const [students, setStudents] = useState<Student[]>([
+    { id: '1', name: 'Quan1', age: 18 },
+    { id: '2', name: 'Quan2', age: 18 },
+    { id: '3', name: 'Quan3', age: 18 },
+    { id: '4', name: 'Quan4', age: 18 },
+    { id: '5', name: 'Quan5', age: 18 },
+    { id: '6', name: 'Quan6', age: 18 },
+    { id: '7', name: 'Quan7', age: 18 },
+    { id: '9', name: 'Quan8', age: 18 },
+  ]);
   return (
-      
-      <View style ={styles.container}>
-         <View>
-         <Text style ={styles.text}>Name: {name}</Text>
 
-          <TextInput style = {styles.inputField}
-           onChangeText={(value) => setName(value)}
-          />
-        </View>
-                 <View>
-         <Text style ={styles.text}>Age: {age}</Text>
+    <View style={styles.container}>
+      <Text style={{ fontSize: 60 }}>Hello word</Text>
+      <ScrollView>
+      {students.map(item => {
+        return(
+          <View key={item.id}>
+            <Text style={styles.item}>{item.name}</Text>
+          </View>
+        )
+      })}
+      </ScrollView>
 
-          <TextInput style = {styles.inputField}
-           onChangeText={(value) => setAge(+value)}
-           keyboardType='numeric'
-          maxLength={2}
-          />
-        </View>
-          <Text style = {styles.text}> count = {count} </Text>
-           <View>
-              <Button 
-                color={"red"}
-                title='Increase'
-                onPress={() => setCount(count + 1)}
-              />
-           </View>
-      </View>
+    </View>
 
   );
 }
@@ -42,16 +41,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    paddingTop: 50,
+    paddingHorizontal: 20
   },
-  text:{
-    fontSize: 40,
-  },
-  inputField: {
-    borderColor: 'green',
-    borderWidth: 1,
-    width: 200,
-    padding: 1,
+  item: {
+    fontSize: 30,
+    backgroundColor: 'green',
+    padding: 10,
+    marginBottom: 50
   }
 });
