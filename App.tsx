@@ -1,48 +1,55 @@
 import { useState } from 'react';
-import { Button, FlatList, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Button, FlatList, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 
 export default function App() {
-
-  type Student = {
+  interface IToDo {
     id: string;
-    name: string;
-    age: number;
-  };
-  const [students, setStudents] = useState<Student[]>([
-    { id: '1', name: 'Quan1', age: 18 },
-    { id: '2', name: 'Quan2', age: 18 },
-    { id: '3', name: 'Quan3', age: 18 },
-    { id: '4', name: 'Quan4', age: 18 },
-    { id: '5', name: 'Quan5', age: 18 },
-    { id: '6', name: 'Quan6', age: 18 },
-    { id: '7', name: 'Quan7', age: 18 },
-    { id: '9', name: 'Quan8', age: 18 },
-  ]);
+    content: string;
+  }
+  const [todo, setToDo] = useState<string>("");
+  const [listToDo, setListToDo] = useState<IToDo[]>([]);
+
+  const OnChangeText = (value: string) =>{
+    setToDo(value);
+  }
+  const RandomNumber = (min: number, max: number) => {
+      return Math.floor(Math.random() * (max - min + 1)) + min + "";
+  }
+  const OnPressBtn = () => {
+    setListToDo([{id: RandomNumber(2, 1888), content: todo}, ...listToDo])
+    setToDo("")
+  }
+  const OnDeleteToDo = (id: string) => {
+    const newToDoList = listToDo.filter(item => item.id != id)
+    setListToDo(newToDoList);
+  }
+
   return (
 
     <View style={styles.container}>
-      <Text style={{ fontSize: 60 }}>Hello word</Text>
-      {/* <ScrollView>
-      {students.map(item => {
-        return(
-          <View key={item.id}>
-            <Text style={styles.item}>{item.name}</Text>
-          </View>
-        )
-      })}
-      </ScrollView> */}
-
+      <Text style={styles.header}>To do App</Text>
+      <TextInput
+        style={styles.textInput}
+        value= {todo}
+        onChangeText={OnChangeText}
+      />
+      <View style={styles.button}>
+        <Button
+          title='Add to do'
+          onPress={OnPressBtn}
+        />
+      </View>
       <FlatList
-        data={students}
+        data = {listToDo}
         keyExtractor={item => item.id}
         renderItem={(data) => {
-        return(
-          <View>
-            <Text style={styles.item}>{data.item.name}</Text>
-          </View>
-        )
+          return(
+            <TouchableOpacity onPress={() => OnDeleteToDo(data.item.id)}>
+              <Text style={styles.item}>{data.item.content}</Text>
+            </TouchableOpacity>
+
+          );
         }}
-      
       />
     </View>
 
@@ -50,16 +57,34 @@ export default function App() {
 }
 
 const styles = StyleSheet.create({
+  header: {
+    backgroundColor: "pink",
+    fontSize: 60,
+    color: "white",
+    textAlign: 'center',
+
+  },
   container: {
     flex: 1,
     backgroundColor: '#fff',
     paddingTop: 50,
-    paddingHorizontal: 20
+  },
+  textInput: {
+    borderBottomColor: "green",
+    borderBottomWidth: 1,
+    fontSize: 30,
+    margin: 10,
+  },
+  button: {
+    marginHorizontal: 60,
+    borderColor: 'red',
+    borderWidth: 1
   },
   item: {
+    borderWidth: 1,
+    borderColor: "pink",
     fontSize: 30,
-    backgroundColor: 'green',
-    padding: 10,
-    marginBottom: 50
+    margin: 10,
+    paddingLeft: 20
   }
 });
