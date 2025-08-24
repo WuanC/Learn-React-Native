@@ -1,16 +1,15 @@
 
 import { Text, View } from "react-native";
-import HomeScreen from "./components/reviews/home";
-import DetailScreen from "./components/reviews/detail";
-import AboutScreen from "./components/reviews/about";
+
 
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import { OPENSANS_REGULAR } from "./ultis/constant";
 import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-const Stack = createNativeStackNavigator<RootStackParamList>();
+import 'react-native-gesture-handler';
+import AppNavigation from "./components/navigation/app.navigation";
+
 SplashScreen.preventAutoHideAsync();
 const App = () => {
         const [loaded, error] = useFonts({
@@ -26,13 +25,7 @@ const App = () => {
     }
     return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="home"
-         component={HomeScreen} 
-         options={{title: 'Overview'}}
-         /> 
-        <Stack.Screen name="review-detail" component={DetailScreen}/>
-      </Stack.Navigator>
+        <AppNavigation/>
     </NavigationContainer>
         
     );
